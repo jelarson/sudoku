@@ -31,33 +31,49 @@ const wrongCss = css`
   background-color: red;
 `
 
+const selectedNumCss = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: black 1px solid;
+  width: 45px;
+  height: 45px;
+  font-weight: 900;
+  font-size: 1.4em;
+  background-color: black;
+  color: white;
+`
+
 export default function SectionNumber(props) {
   const { numberVal, numberVisible } = props
-  const [numVisible, setNumVisible] = useState(numberVisible)
   const { selected } = useContext(SelectedContext)
-  // const [rightAnswer, setRightAnswer] = useState(false)
-  // const [wrongAnswer, setWrongAnswer] = useState(false)
+  const [numVisible, setNumVisible] = useState(numberVisible)
   const [wrongAnswerVal, setWrongAnswerVal] = useState(0)
   const [boxStyle, setBoxStyle] = useState(numberCss)
+  const [clickable, setClickable] = useState(true)
 
   function checkAnswer() {
-    console.log(numberVal)
-    if (selected.selectedNum === numberVal) {
-      console.log('you got it right!')
-      setBoxStyle(correctCss)
-      // setRightAnswer(true)
-    } else {
-      console.log('you got it wrong')
-      setWrongAnswerVal(selected.selectedNum)
-      setBoxStyle(wrongCss)
+    if (clickable) {
+      if (selected.selectedNum === numberVal) {
+        setBoxStyle(correctCss)
+      } else {
+        setWrongAnswerVal(selected.selectedNum)
+        setBoxStyle(wrongCss)
+      }
     }
   }
 
   useEffect(() => {
-    if (numVisible && selected.selectedNum === numberVal) {
-      // increase font size
+    if (boxStyle === correctCss || numVisible) {
+      setClickable(false)
     }
-  }, [numVisible, selected.selectedNum])
+  }, [boxStyle])
+
+  useEffect(() => {
+    if (numVisible && selected.selectedNum === numberVal) {
+      // setBoxStyle(selectedNumCss)
+    }
+  }, [numVisible, selected.selectedNum, numberVal])
 
   useEffect(() => {
     if (boxStyle === correctCss) {
