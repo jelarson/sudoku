@@ -67,12 +67,12 @@ export default function SectionNumber(props) {
     if (boxStyle === correctCss || numVisible) {
       setClickable(false)
     }
-  }, [boxStyle])
+  }, [boxStyle, numVisible])
 
   useEffect(() => {
     if (numVisible && selected.selectedNum === numberVal) {
-      // setBoxStyle(selectedNumCss)
-    }
+      setBoxStyle(selectedNumCss)
+    } else setBoxStyle(numberCss)
   }, [numVisible, selected.selectedNum, numberVal])
 
   useEffect(() => {
