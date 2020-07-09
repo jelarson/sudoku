@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { css } from '@emotion/core'
+import Timer from 'react-compound-timer'
 
+import { SelectedContext } from '../context/context'
 import SectionGrid from '../section-grid/sectionGrid'
 import NumberButton from '../number-button/numberButton'
 
@@ -31,11 +33,19 @@ const buttonsWrapperCss = css`
   margin-top: 15px;
   display: flex;
 `
+const timerWrapperCss = css`
+  position: absolute;
+  top: 30px;
+  right: 60px;
+`
 
 export default function Home() {
+  const { selected } = useContext(SelectedContext)
+
   return (
     <div css={homeWrapperCss}>
       <div css={homeHeaderCss}>Sudoku</div>
+      <div>Errors: {selected.amountIncorrect}</div>
       <div css={gameBoardCss}>
         <SectionGrid
           numArr={[5, 3, 1, 6, 4, 9, 8, 2, 7]}
@@ -84,6 +94,13 @@ export default function Home() {
         <NumberButton buttonNum="7" />
         <NumberButton buttonNum="8" />
         <NumberButton buttonNum="9" />
+      </div>
+      <div css={timerWrapperCss}>
+        <Timer formatValue={(value) => `${value < 10 ? `0${value}` : value} units `}>
+          <Timer.Hours formatValue={(value) => `${value} hrs. `} />
+          <Timer.Minutes formatValue={(value) => `${value} min. `} />
+          <Timer.Seconds formatValue={(value) => `${value} s. `} />
+        </Timer>
       </div>
     </div>
   )

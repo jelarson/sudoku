@@ -21,44 +21,12 @@ const numberCss = css`
     background-color: white;
   }
 
-  &[amISelected='true'] {
+  &[isselected='true'] {
     font-weight: 900;
     font-size: 1.4em;
     background-color: black;
     color: white;
   }
-`
-const correctCss = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: black 1px solid;
-  width: 45px;
-  height: 45px;
-  color: green;
-`
-const wrongCss = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: black 1px solid;
-  width: 45px;
-  height: 45px;
-  color: white;
-  background-color: red;
-`
-
-const selectedNumCss = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: black 1px solid;
-  width: 45px;
-  height: 45px;
-  font-weight: 900;
-  font-size: 1.4em;
-  background-color: black;
-  color: white;
 `
 
 export default function SectionNumber(props) {
@@ -69,17 +37,14 @@ export default function SectionNumber(props) {
   const [wrongAnswerVal, setWrongAnswerVal] = useState(0)
   const [wrongAnswerBool, setWrongAnswerBool] = useState(false)
   const [correctAnswerBool, setCorrectAnswerBool] = useState(false)
-  const [boxStyle, setBoxStyle] = useState(numberCss)
   const [clickable, setClickable] = useState(true)
 
   function checkAnswer() {
     if (clickable) {
       if (selected.selectedNum === numberVal) {
-        // setBoxStyle(correctCss)
         setCorrectAnswerBool(true)
       } else {
         setWrongAnswerVal(selected.selectedNum)
-        // setBoxStyle(wrongCss)
         setWrongAnswerBool(true)
       }
     }
@@ -93,10 +58,8 @@ export default function SectionNumber(props) {
 
   useEffect(() => {
     if (numVisible && selected.selectedNum === numberVal) {
-      // setBoxStyle(selectedNumCss)
       setCurrentlySelected(true)
     } else setCurrentlySelected(false)
-    // } else setBoxStyle(numberCss)
   }, [numVisible, selected.selectedNum, numberVal])
 
   useEffect(() => {
@@ -105,16 +68,11 @@ export default function SectionNumber(props) {
     }
   }, [correctAnswerBool])
 
-  // useEffect(() => {
-  //   console.log('am I selected? ', currentlySelected)
-  // }, [currentlySelected])
-
   return (
-    // <div css={boxStyle} onClick={checkAnswer}>
     <div
       css={numberCss}
       onClick={checkAnswer}
-      amISelected={currentlySelected.toString()}
+      isselected={currentlySelected.toString()}
       wrong={wrongAnswerBool.toString()}
       correct={correctAnswerBool.toString()}
     >
