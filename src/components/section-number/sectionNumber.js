@@ -10,6 +10,13 @@ const numberCss = css`
   border: black 1px solid;
   width: 45px;
   height: 45px;
+
+  &[amISelected='true'] {
+    font-weight: 900;
+    font-size: 1.4em;
+    background-color: black;
+    color: white;
+  }
 `
 const correctCss = css`
   display: flex;
@@ -47,6 +54,7 @@ const selectedNumCss = css`
 export default function SectionNumber(props) {
   const { numberVal, numberVisible } = props
   const { selected } = useContext(SelectedContext)
+  const [currentlySelected, setCurrentlySelected] = useState(false)
   const [numVisible, setNumVisible] = useState(numberVisible)
   const [wrongAnswerVal, setWrongAnswerVal] = useState(0)
   const [boxStyle, setBoxStyle] = useState(numberCss)
@@ -71,8 +79,10 @@ export default function SectionNumber(props) {
 
   useEffect(() => {
     if (numVisible && selected.selectedNum === numberVal) {
-      setBoxStyle(selectedNumCss)
-    } else setBoxStyle(numberCss)
+      // setBoxStyle(selectedNumCss)
+      setCurrentlySelected(true)
+    } else setCurrentlySelected(false)
+    // } else setBoxStyle(numberCss)
   }, [numVisible, selected.selectedNum, numberVal])
 
   useEffect(() => {
@@ -81,8 +91,13 @@ export default function SectionNumber(props) {
     }
   }, [boxStyle])
 
+  // useEffect(() => {
+  //   console.log('am I selected? ', currentlySelected)
+  // }, [currentlySelected])
+
   return (
-    <div css={boxStyle} onClick={checkAnswer}>
+    // <div css={boxStyle} onClick={checkAnswer}>
+    <div css={numberCss} onClick={checkAnswer} amISelected={currentlySelected.toString()}>
       {numVisible ? numberVal : boxStyle === wrongCss ? wrongAnswerVal : ' '}
     </div>
   )
